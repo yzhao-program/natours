@@ -10,6 +10,7 @@ const leaflet = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
+const userPhotoUpload = document.querySelector('.form__upload');
 const userPasswordForm = document.querySelector('.form-user-password');
 const signupForm = document.querySelector('.form--signup');
 const bookBtn = document.getElementById('book-tour');
@@ -36,11 +37,29 @@ if (userDataForm)
     const form = new FormData();
     form.append('name', document.getElementById('name').value);
     form.append('email', document.getElementById('email').value);
-    form.append('photo', document.getElementById('photo').files[0]);
+    // form.append('photo', document.getElementById('photo').files[0]);
     console.log(form);
 
     updateSettings(form, 'data');
   });
+
+if (userPhotoUpload) {
+  userPhotoUpload.addEventListener('change', async (e) => {
+    const form = new FormData();
+    form.append('photo', document.getElementById('photo').files[0]);
+
+    const newImage = await updateSettings(form, 'photo');
+
+    if (newImage) {
+      document
+        .querySelector('.nav__user-img')
+        .setAttribute('src', `/img/users/${newImage}`);
+      document
+        .querySelector('.form__user-photo')
+        .setAttribute('src', `/img/users/${newImage}`);
+    }
+  });
+}
 
 if (userPasswordForm)
   userPasswordForm.addEventListener('submit', async (e) => {

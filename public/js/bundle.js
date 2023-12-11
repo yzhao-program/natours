@@ -5466,20 +5466,28 @@ var updateSettings = /*#__PURE__*/function () {
           });
         case 4:
           res = _context.sent;
-          if (res.data.status === 'success') {
-            (0, _alerts.showAlert)('success', "".concat(type.toUpperCase(), " updated successfully!"));
+          if (!(res.data.status === 'success')) {
+            _context.next = 9;
+            break;
           }
-          _context.next = 11;
+          (0, _alerts.showAlert)('success', "".concat(type.toUpperCase(), " updated successfully!"));
+          if (!(type === 'photo')) {
+            _context.next = 9;
+            break;
+          }
+          return _context.abrupt("return", res.data.data.user.photo);
+        case 9:
+          _context.next = 14;
           break;
-        case 8:
-          _context.prev = 8;
+        case 11:
+          _context.prev = 11;
           _context.t0 = _context["catch"](0);
           (0, _alerts.showAlert)('error', _context.t0.response.data.message);
-        case 11:
+        case 14:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 8]]);
+    }, _callee, null, [[0, 11]]);
   }));
   return function updateSettings(_x, _x2) {
     return _ref.apply(this, arguments);
@@ -5610,6 +5618,7 @@ var leaflet = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
 var logOutBtn = document.querySelector('.nav__el--logout');
 var userDataForm = document.querySelector('.form-user-data');
+var userPhotoUpload = document.querySelector('.form__upload');
 var userPasswordForm = document.querySelector('.form-user-password');
 var signupForm = document.querySelector('.form--signup');
 var bookBtn = document.getElementById('book-tour');
@@ -5631,22 +5640,50 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   var form = new FormData();
   form.append('name', document.getElementById('name').value);
   form.append('email', document.getElementById('email').value);
-  form.append('photo', document.getElementById('photo').files[0]);
+  // form.append('photo', document.getElementById('photo').files[0]);
   console.log(form);
   (0, _updateSettings.updateSettings)(form, 'data');
 });
+if (userPhotoUpload) {
+  userPhotoUpload.addEventListener('change', /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
+      var form, newImage;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            form = new FormData();
+            form.append('photo', document.getElementById('photo').files[0]);
+            _context.next = 4;
+            return (0, _updateSettings.updateSettings)(form, 'photo');
+          case 4:
+            newImage = _context.sent;
+            if (newImage) {
+              document.querySelector('.nav__user-img').setAttribute('src', "/img/users/".concat(newImage));
+              document.querySelector('.form__user-photo').setAttribute('src', "/img/users/".concat(newImage));
+            }
+          case 6:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee);
+    }));
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+}
 if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(e) {
     var passwordCurrent, password, passwordConfirm;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
         case 0:
           e.preventDefault();
           document.querySelector('.btn--save-password').textContent = 'Updating...';
           passwordCurrent = document.getElementById('password-current').value;
           password = document.getElementById('password').value;
           passwordConfirm = document.getElementById('password-confirm').value;
-          _context.next = 7;
+          _context2.next = 7;
           return (0, _updateSettings.updateSettings)({
             passwordCurrent: passwordCurrent,
             password: password,
@@ -5659,12 +5696,12 @@ if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/f
           document.getElementById('password-confirm').value = '';
         case 11:
         case "end":
-          return _context.stop();
+          return _context2.stop();
       }
-    }, _callee);
+    }, _callee2);
   }));
-  return function (_x) {
-    return _ref.apply(this, arguments);
+  return function (_x2) {
+    return _ref2.apply(this, arguments);
   };
 }());
 if (signupForm) signupForm.addEventListener('submit', function (e) {
@@ -5705,7 +5742,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50699" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58420" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

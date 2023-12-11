@@ -1,9 +1,24 @@
+const fs = require('fs');
+const util = require('util');
 const multer = require('multer');
 const sharp = require('sharp');
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
+
+const deleteUserPhotoServer = async (photo) => {
+  if (photo.startsWith('default')) return;
+
+  const path = `${__dirname}/../public/img/users/${photo}`;
+  const unlink = util.promisify(fs.unlink);
+
+  try {
+    await unlink(path);
+  } catch (error) {
+    console.log('ERROR 💥', error);
+  }
+};
 
 // const multerStorage = multer.diskStorage({
 //   destination: (req, file, cb) => {
@@ -34,7 +49,7 @@ exports.uploadUserPhoto = upload.single('photo');
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
-  req.file.filename = `user-${req.user.id}.jpeg`;
+  req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
 
   await sharp(req.file.buffer)
     .resize(500, 500)
@@ -78,6 +93,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
+
+  if (req.file) await deleteUserPhotoServer(req.user.photo);
 
   res.status(200).json({
     status: 'success',
