@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { showAlert } from './alerts';
 
-export const forgotpassword = async (email) => {
+export const forgotPassword = async (email) => {
   try {
     const res = await axios({
       method: 'POST',

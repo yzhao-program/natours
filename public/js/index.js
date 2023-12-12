@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { displayMap } from './mapLeaflet';
 import { login, logout } from './login';
-import { forgotpassword } from './forgotpassword';
+import { forgotPassword } from './forgotPassword';
 import { updateSettings } from './updateSettings';
 import { signup } from './signup';
 import { bookTour } from './stripe';
@@ -9,7 +9,7 @@ import { bookTour } from './stripe';
 // DOM ELEMENTS
 const leaflet = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
-const forgotpasswordForm = document.querySelector('.form--forgotpassword');
+const forgotPasswordForm = document.querySelector('.form--forgotpassword');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPhotoUpload = document.querySelector('.form__upload');
@@ -31,11 +31,11 @@ if (loginForm)
     login(email, password);
   });
 
-if (forgotpasswordForm)
-  forgotpasswordForm.addEventListener('submit', async (e) => {
+if (forgotPasswordForm)
+  forgotPasswordForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value;
-    await forgotpassword(email);
+    await forgotPassword(email);
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
