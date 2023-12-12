@@ -65,6 +65,17 @@ exports.getForgotPasswordForm = (req, res) => {
   }
 };
 
+exports.getResetPasswordForm = (req, res) => {
+  if (res.locals.user) {
+    res.redirect('/');
+  } else {
+    res.status(200).render('resetpassword', {
+      title: `Reset your password`,
+      token: req.query.token,
+    });
+  }
+};
+
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
     title: 'Your account',

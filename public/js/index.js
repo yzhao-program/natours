@@ -5,11 +5,13 @@ import { forgotPassword } from './forgotPassword';
 import { updateSettings } from './updateSettings';
 import { signup } from './signup';
 import { bookTour } from './stripe';
+import { resetPassword } from './resetPassword';
 
 // DOM ELEMENTS
 const leaflet = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const forgotPasswordForm = document.querySelector('.form--forgotpassword');
+const resetPasswordForm = document.querySelector('.form--resetpassword');
 const logOutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPhotoUpload = document.querySelector('.form__upload');
@@ -36,6 +38,15 @@ if (forgotPasswordForm)
     e.preventDefault();
     const email = document.getElementById('email').value;
     await forgotPassword(email);
+  });
+
+if (resetPasswordForm)
+  resetPasswordForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    const token = document.querySelector('.btn-new-password').dataset.token;
+    await resetPassword(password, passwordConfirm, token);
   });
 
 if (logOutBtn) logOutBtn.addEventListener('click', logout);
