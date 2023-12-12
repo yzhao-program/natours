@@ -55,6 +55,16 @@ exports.getSignUpForm = (req, res) => {
   }
 };
 
+exports.getForgotPasswordForm = (req, res) => {
+  if (res.locals.user) {
+    res.redirect('/');
+  } else {
+    res.status(200).render('forgotpassword', {
+      title: `Input your account email to reset password`,
+    });
+  }
+};
+
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
     title: 'Your account',

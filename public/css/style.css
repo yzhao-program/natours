@@ -1222,7 +1222,7 @@ body {
   margin: 0 auto;
 }
 
-.login-form {
+.user-form {
   margin: 0 auto;
   max-width: 55rem;
   background-color: #fff;
@@ -1322,4 +1322,18 @@ body {
   box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
+}
+.form__button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.form__button a:hover,
+.form__button a:active {
+  color: #55c57a;
+}
+.link__forgotpassword {
+  color: #777;
+  /* text-decoration: none !important; */
+  font-size: medium;
 }
