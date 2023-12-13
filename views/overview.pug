@@ -23,10 +23,7 @@ block content
             .card__data
               svg.card__icon
                 use(xlink:href='/img/icons.svg#icon-calendar')
-              - const now = new Date();
-              - const tourDate = tour.startDates[0];
-              - tourDate.setFullYear(now.getFullYear() + ((tourDate.getMonth() > now.getMonth()) ? 0 : 1));
-              span= tourDate.toLocaleString('en-us', {month: 'long', year: 'numeric'})
+              span= tour.startDates[0].toLocaleString('en-us', {month: 'long', year: 'numeric'})
             .card__data
               svg.card__icon
                 use(xlink:href='/img/icons.svg#icon-flag')
