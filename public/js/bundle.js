@@ -5620,14 +5620,21 @@ function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyri
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 var bookTour = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(tourId) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(tourId, startDateString) {
     var session, stripe;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return (0, _axios.default)("http://127.0.0.1:3000/api/v1/bookings/checkout-session/".concat(tourId));
+          return (0, _axios.default)({
+            method: 'POST',
+            url: "http://127.0.0.1:3000/api/v1/bookings/checkout-session",
+            data: {
+              tourId: tourId,
+              startDateString: startDateString
+            }
+          });
         case 3:
           session = _context.sent;
           console.log(session);
@@ -5650,7 +5657,7 @@ var bookTour = /*#__PURE__*/function () {
       }
     }, _callee, null, [[0, 10]]);
   }));
-  return function bookTour(_x) {
+  return function bookTour(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -5869,8 +5876,10 @@ if (signupForm) signupForm.addEventListener('submit', function (e) {
 });
 if (bookBtn) bookBtn.addEventListener('click', function (e) {
   e.target.textContent = 'Processing...';
-  var tourId = e.target.dataset.tourId;
-  (0, _stripe.bookTour)(tourId);
+  var _e$target$dataset = e.target.dataset,
+    tourId = _e$target$dataset.tourId,
+    startDateString = _e$target$dataset.startDate;
+  (0, _stripe.bookTour)(tourId, startDateString);
 });
 },{"./mapLeaflet":"mapLeaflet.js","./login":"login.js","./forgotPassword":"forgotPassword.js","./updateSettings":"updateSettings.js","./signup":"signup.js","./stripe":"stripe.js","./resetPassword":"resetPassword.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -5897,7 +5906,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50653" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58033" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

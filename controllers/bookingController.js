@@ -4,21 +4,24 @@ const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
 
-exports.getCheckoutSession = catchAsync(async (req, res, next) => {
+exports.createCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
-  const tour = await Tour.findById(req.params.tourId);
+  const { tourId, startDateString } = req.body;
+  const tour = await Tour.findById(tourId);
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   console.log(tour);
 
   // 2) Create checkout session
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    success_url: `${req.protocol}://${req.get('host')}/my-tours/?tour=${
-      req.params.tourId
-    }&user=${req.user.id}&price=${tour.price}`,
+    success_url: `${req.protocol}://${req.get(
+      'host'
+    )}/my-tours/?tour=${tourId}&user=${req.user.id}&price=${
+      tour.price
+    }&startDateString=${startDateString}`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
-    client_reference_id: req.params.tourId,
+    client_reference_id: tourId,
     mode: 'payment',
     line_items: [
       {
@@ -45,10 +48,11 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
-  const { tour, user, price } = req.query;
+  const { tour, user, price, startDateString } = req.query;
 
-  if (!tour || !user || !price) return next();
-  await Booking.create({ tour, user, price });
+  if (!tour || !user || !price || !startDateString) return next();
+  const startDate = new Date(startDateString);
+  await Booking.create({ tour, user, price, startDate });
 
   res.redirect(req.originalUrl.split('?')[0]);
 });

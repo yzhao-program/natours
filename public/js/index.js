@@ -113,6 +113,6 @@ if (signupForm)
 if (bookBtn)
   bookBtn.addEventListener('click', (e) => {
     e.target.textContent = 'Processing...';
-    const { tourId } = e.target.dataset;
-    bookTour(tourId);
+    const { tourId, startDate: startDateString } = e.target.dataset;
+    bookTour(tourId, startDateString);
   });
