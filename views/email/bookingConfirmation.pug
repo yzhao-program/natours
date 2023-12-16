@@ -1,0 +1,17 @@
+extends baseEmail
+
+block content
+  p Hi #{firstName},
+  p We're glad to see you book a tour and thank you for choosing Natours. 🎉🙏
+  p This email is a confirmation for your booking. You can go to your account booking page to see all your bookings.
+  table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+    tbody
+      tr
+        td(align='left')
+          table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+              tr
+                td
+                  a(href=`${url}`, target='_blank') My Bookings
+  p If you need any help, please don't hesitate to contact me!
+  p - Yilei Zhao

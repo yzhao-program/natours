@@ -3,6 +3,9 @@ const Tour = require('../models/tourModel');
 const Booking = require('../models/bookingModel');
 const catchAsync = require('../utils/catchAsync');
 const factory = require('./handlerFactory');
+const Email = require('../utils/email');
+const User = require('../models/userModel');
+const AppError = require('../utils/appError');
 
 exports.createCheckoutSession = catchAsync(async (req, res, next) => {
   // 1) Get the currently booked tour
@@ -51,8 +54,18 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   const { tour, user, price, startDateString, tourSlug } = req.query;
 
   if (!tour || !user || !price || !startDateString || !tourSlug) return next();
+
+  const userObject = await User.findById(user);
+  if (!user) {
+    return next(new AppError(`There is no user with this id: ${user}`, 404));
+  }
+
   const startDate = new Date(startDateString);
   await Booking.create({ tour, user, price, startDate, tourSlug });
+
+  const myToursUrl = `${req.protocol}://${req.get('host')}/my-tours`;
+
+  await new Email(userObject, myToursUrl).sendBookingConfirmation();
 
   res.redirect(req.originalUrl.split('?')[0]);
 });
