@@ -93,13 +93,47 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   // 1) Find all bookings
   const bookings = await Booking.find({ user: req.user.id });
 
-  // 2) Find tours with the returned IDs
-  const tourIDs = bookings.map((el) => el.tour.id);
-  const tours = await Tour.find({ _id: { $in: tourIDs } });
+  const tours = bookings.map((booking) => {
+    const { price, tour: bookingTour, startDate } = booking;
+    bookingTour.price = price;
+    bookingTour.startDates = [startDate];
+    return bookingTour;
+  });
 
-  res.status(200).render('overview', {
+  // 2) Find tours with the returned IDs
+  // const tourIDs = bookings.map((el) => el.tour.id);
+  // const tours = await Tour.find({ _id: { $in: tourIDs } });
+
+  res.status(200).render('mybooking', {
     title: 'My Tours',
     tours,
+  });
+});
+
+exports.getMyTour = catchAsync(async (req, res, next) => {
+  // 1) Get the data, for the requested tour (including reviews and guides)
+  const booking = await Booking.findOne({ tourSlug: req.params.slug }).populate(
+    {
+      path: 'reviews',
+      fields: 'review rating user',
+    }
+  );
+
+  if (!booking) {
+    return next(new AppError('There is no booking tour with that name.', 404));
+  }
+
+  const newTour = booking.tour;
+  newTour.price = booking.price;
+  newTour.startDates = [booking.startDate];
+  newTour.reviews = booking.reviews;
+  newTour.booking = true;
+
+  // 2) Build template
+  // 3) Render template using data from 1)
+  res.status(200).render('tour', {
+    title: `${newTour.name} Tour`,
+    tour: newTour,
   });
 });
 

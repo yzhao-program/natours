@@ -1337,3 +1337,7 @@ body {
   /* text-decoration: none !important; */
   font-size: medium;
 }
+.booking__header {
+  text-align: center;
+  margin-bottom: 80px;
+}

@@ -11,6 +11,10 @@ const bookingSchema = new mongoose.Schema({
     ref: 'User',
     required: [true, 'Booking must belong to a User!'],
   },
+  tourSlug: {
+    type: String,
+    require: [true, 'Booking must have a tour slug'],
+  },
   price: {
     type: Number,
     require: [true, 'Booking must have a price.'],
@@ -29,10 +33,17 @@ const bookingSchema = new mongoose.Schema({
   },
 });
 
+// Virtual populate
+bookingSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: 'tour',
+});
+
 bookingSchema.pre(/^find/, function (next) {
-  this.populate('user').populate({
+  this.populate({ path: 'user', select: '-__v' }).populate({
     path: 'tour',
-    select: 'name',
+    select: '-__v -price -startDates',
   });
   next();
 });

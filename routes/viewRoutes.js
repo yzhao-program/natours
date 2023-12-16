@@ -28,6 +28,12 @@ router.get(
   viewsController.getMyTours
 );
 
+router.get(
+  '/my-tours/:slug',
+  authController.isLoggedIn,
+  viewsController.getMyTour
+);
+
 router.post(
   '/submit-user-data',
   authController.protect,

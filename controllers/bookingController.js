@@ -18,7 +18,7 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
       'host'
     )}/my-tours/?tour=${tourId}&user=${req.user.id}&price=${
       tour.price
-    }&startDateString=${startDateString}`,
+    }&startDateString=${startDateString}&tourSlug=${tour.slug}`,
     cancel_url: `${req.protocol}://${req.get('host')}/tour/${tour.slug}`,
     customer_email: req.user.email,
     client_reference_id: tourId,
@@ -48,11 +48,11 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
 
 exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   // This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying
-  const { tour, user, price, startDateString } = req.query;
+  const { tour, user, price, startDateString, tourSlug } = req.query;
 
-  if (!tour || !user || !price || !startDateString) return next();
+  if (!tour || !user || !price || !startDateString || !tourSlug) return next();
   const startDate = new Date(startDateString);
-  await Booking.create({ tour, user, price, startDate });
+  await Booking.create({ tour, user, price, startDate, tourSlug });
 
   res.redirect(req.originalUrl.split('?')[0]);
 });
