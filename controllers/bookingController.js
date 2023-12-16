@@ -12,7 +12,7 @@ exports.createCheckoutSession = catchAsync(async (req, res, next) => {
   const { tourId, startDateString } = req.body;
   const tour = await Tour.findById(tourId);
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-  console.log(tour);
+  // console.log(tour);
 
   // 2) Create checkout session
   const session = await stripe.checkout.sessions.create({

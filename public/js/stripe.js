@@ -7,10 +7,10 @@ export const bookTour = async (tourId, startDateString) => {
     // 1) Get checkout session from API
     const session = await axios({
       method: 'POST',
-      url: `http://127.0.0.1:3000/api/v1/bookings/checkout-session`,
+      url: `/api/v1/bookings/checkout-session`,
       data: { tourId, startDateString },
     });
-    console.log(session);
+    // console.log(session);
 
     const stripe = Stripe(
       'pk_test_51MVpSkJAl7U5yZWAeFQ30kH4aUjTEUQpxutLuH0VoeRMftEOJm68VtEllcqXwAgrlhcGrb5vDyGCZdOMlpbCAG8e00UiSqbMw5'
