@@ -47,7 +47,7 @@ exports.getLoginForm = (req, res) => {
     res.redirect('/');
   } else {
     res.status(200).render('login', {
-      title: 'Log into your account',
+      title: 'Log Into Your Account',
     });
   }
 };
@@ -67,7 +67,7 @@ exports.getForgotPasswordForm = (req, res) => {
     res.redirect('/');
   } else {
     res.status(200).render('forgotpassword', {
-      title: `Input your account email to reset password`,
+      title: `Input Your Account Email to Reset Password`,
     });
   }
 };
@@ -77,7 +77,7 @@ exports.getResetPasswordForm = (req, res) => {
     res.redirect('/');
   } else {
     res.status(200).render('resetpassword', {
-      title: `Reset your password`,
+      title: `Reset Your Password`,
       token: req.query.token,
     });
   }
@@ -85,7 +85,7 @@ exports.getResetPasswordForm = (req, res) => {
 
 exports.getAccount = (req, res) => {
   res.status(200).render('account', {
-    title: 'Your account',
+    title: 'Your Account',
   });
 };
 
@@ -105,7 +105,7 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   // const tours = await Tour.find({ _id: { $in: tourIDs } });
 
   res.status(200).render('mybooking', {
-    title: 'My Tours',
+    title: 'Your Booking Tours',
     tours,
   });
 });
@@ -132,7 +132,7 @@ exports.getMyTour = catchAsync(async (req, res, next) => {
   // 2) Build template
   // 3) Render template using data from 1)
   res.status(200).render('tour', {
-    title: `${newTour.name} Tour`,
+    title: `Your Booking ${newTour.name} Tour`,
     tour: newTour,
   });
 });
@@ -151,7 +151,7 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
   );
 
   res.status(200).render('account', {
-    title: 'Your account',
+    title: 'Your Account',
     user: updatedUser,
   });
 });
