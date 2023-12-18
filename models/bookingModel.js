@@ -33,6 +33,9 @@ const bookingSchema = new mongoose.Schema({
   },
 });
 
+bookingSchema.index({ tourSlug: 1 }, { unique: true });
+bookingSchema.index({ user: 1 });
+
 // Virtual populate
 bookingSchema.virtual('reviews', {
   ref: 'Review',
