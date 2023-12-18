@@ -6,6 +6,7 @@ import { updateSettings } from './updateSettings';
 import { signup } from './signup';
 import { bookTour } from './stripe';
 import { resetPassword } from './resetPassword';
+import { showAlert } from './alerts';
 
 // DOM ELEMENTS
 const leaflet = document.getElementById('map');
@@ -115,3 +116,6 @@ if (bookBtn)
     const { tourId, startDate: startDateString } = e.target.dataset;
     bookTour(tourId, startDateString);
   });
+
+const alertMessage = document.querySelector('body').dataset.alert;
+if (alertMessage) showAlert('success', alertMessage, 10);
