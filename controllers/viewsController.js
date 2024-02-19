@@ -102,7 +102,8 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
 
   const tours = bookings.map((booking) => {
-    const { price, tour: bookingTour, startDate, tourSlug } = booking;
+    const { price, tour: bookingTourRef, startDate, tourSlug } = booking;
+    const bookingTour = JSON.parse(JSON.stringify(bookingTourRef));
     bookingTour.price = price;
     bookingTour.startDates = [startDate];
     bookingTour.slug = tourSlug;
