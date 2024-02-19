@@ -102,9 +102,10 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   const bookings = await Booking.find({ user: req.user.id });
 
   const tours = bookings.map((booking) => {
-    const { price, tour: bookingTour, startDate } = booking;
+    const { price, tour: bookingTour, startDate, tourSlug } = booking;
     bookingTour.price = price;
     bookingTour.startDates = [startDate];
+    bookingTour.slug = tourSlug;
     return bookingTour;
   });
 

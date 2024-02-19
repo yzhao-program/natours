@@ -101,7 +101,11 @@ exports.webhookCheckout = async (req, res, next) => {
     const tour = session.client_reference_id;
     const price = session.amount_total / 100;
 
-    const { startDateString, tourSlug, userId: user } = session.metadata;
+    const {
+      startDateString,
+      tourSlug: tourSlugWithoutBookingTime,
+      userId: user,
+    } = session.metadata;
 
     const userObject = await User.findById(user);
     if (!userObject) {
@@ -109,6 +113,8 @@ exports.webhookCheckout = async (req, res, next) => {
     }
 
     const startDate = new Date(startDateString);
+    const tourSlug = `${tourSlugWithoutBookingTime}-${Date.now().toString()}`;
+
     await Booking.create({ tour, user, price, startDate, tourSlug });
 
     const myToursUrl = `${req.protocol}://${req.get('host')}/my-tours`;

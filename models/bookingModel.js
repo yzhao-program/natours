@@ -46,7 +46,7 @@ bookingSchema.virtual('reviews', {
 bookingSchema.pre(/^find/, function (next) {
   this.populate({ path: 'user', select: '-__v' }).populate({
     path: 'tour',
-    select: '-__v -price -startDates',
+    select: '-__v -price -startDates -slug',
   });
   next();
 });
